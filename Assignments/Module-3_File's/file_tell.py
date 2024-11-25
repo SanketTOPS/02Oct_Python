@@ -1,0 +1,7 @@
+fl=open('new.txt','a')
+#print(fl.read())
+#print(fl.tell())
+print(fl.seek(5))
+#print(fl.tell())
+fl.write("Hii")
+print(fl.tell())
