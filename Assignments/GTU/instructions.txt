@@ -1,7 +1,0 @@
-Welcome to GTU World!
-
-You will find your [3110002, 3110005] papers inside GTU directory.
-Hope, you will found this module helpful.
-
-Thanks & Regards,
-Dhiraj Beri.
