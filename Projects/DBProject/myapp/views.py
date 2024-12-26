@@ -11,3 +11,10 @@ def index(request):
         else:
             print(stdata.errors)
     return render(request,'index.html')
+
+def showdata(request):
+    stdata=studinfo.objects.all()
+    return render(request,'showdata.html',{'stdata':stdata})
+
+def updatedata(request):
+    return render(request,'updatedata.html')
