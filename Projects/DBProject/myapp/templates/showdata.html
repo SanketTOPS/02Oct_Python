@@ -41,8 +41,8 @@
                 <td>{{i.email}}</td>
                 <td>{{i.dob}}</td>
                 <td>{{i.mobile}}</td>
-                <td><a class="btn btn-warning" href="/updatedata">Update</a>
-                    <a class="btn btn-danger" href="">Delete</a>
+                <td><a class="btn btn-warning" href="/updatedata/{{i.id}}">Update</a>
+                    <a class="btn btn-danger" href="/deletedata/{{i.id}}">Delete</a>
                 </td>
             </tr>
             {% endfor %}
