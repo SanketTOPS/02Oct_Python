@@ -17,6 +17,10 @@
     <hr>
     <h2 style="text-align: center;"><u>Signup</u></h2>
     <hr>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Error!</strong> {{msg}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     <div class="container">
         <form method="post" class="row g-3 needs-validation" novalidate>
             {% csrf_token %}
