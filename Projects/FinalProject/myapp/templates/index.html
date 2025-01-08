@@ -11,6 +11,7 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="/static/imgs/favicon.png" type="image/x-icon">
+
 </head>
 
 <body style="background-color:azure">
@@ -48,15 +49,36 @@
                 </ul>
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    <button class="btn btn-outline-success mx-2" type="submit">Search</button>
                 </form>
-                <button class="btn btn-warning mx-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
-                <a href="/signup" class="btn btn-primary">Signup</a>
+                {% if user is none %}
+                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                <a href="/signup" class="btn btn-primary mx-2">Signup</a>
+                {% else %}
+                <!-- <a href="/userlogout" class="btn btn-danger">Logout</a> -->
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        {{user}}
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Update Profile</a></li>
+                        <li><a class="dropdown-item" href="/userlogout">Logout</a></li>
+
+                    </ul>
+                </div>
+                {% endif %}
             </div>
         </div>
     </nav>
     <!-- Navbar End -->
 
+    {% if msg %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>{{msg}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
     <!-- Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -66,16 +88,17 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form method="post">
+                        {% csrf_token %}
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Email address / Username</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1"
+                            <input type="email" name="username" class="form-control" id="exampleInputEmail1"
                                 aria-describedby="emailHelp">
                             <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword1" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1">
+                            <input type="password" name="password" class="form-control" id="exampleInputPassword1">
                         </div>
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -92,7 +115,33 @@
         </div>
     </div>
 
-    <h1 style="text-align: center;">Welcome to Home</h1>
+    <!-- Slideshow Start -->
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/static/imgs/sl1.png" height="550" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="/static/imgs/sl2.png" height="550" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="/static/imgs/sl3.jpg" height="550" class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <!-- Slideshow End -->
+
+
 </body>
 
 </html>
