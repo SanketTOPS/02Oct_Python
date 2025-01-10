@@ -36,9 +36,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/notes">Notes</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Profile</a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/about">About</a>
                     </li>
@@ -48,16 +46,31 @@
                 </ul>
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    <button class="btn btn-outline-success mx-2" type="submit">Search</button>
                 </form>
-                <button class="btn btn-warning mx-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
-                <a href="/signup" class="btn btn-primary">Signup</a>
+                {% if user is none %}
+                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                <a href="/signup" class="btn btn-primary mx-2">Signup</a>
+                {% else %}
+                <!-- <a href="/userlogout" class="btn btn-danger">Logout</a> -->
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        {{user}}
+                    </button>
+                    <ul class="dropdown-menu">
+
+                        <li><a class="dropdown-item" href="/userlogout">Logout</a></li>
+
+                    </ul>
+                </div>
+                {% endif %}
             </div>
         </div>
     </nav>
     <!-- Navbar End -->
 
-    <!-- Modal -->
+    <!-- Modal Start -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -86,13 +99,110 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <a href="/signup" class="btn btn-danger">New User?</a>
                 </div>
             </div>
         </div>
     </div>
+    <!-- Modal End -->
 
-    <h1 style="text-align: center;">Welcome to Profile</h1>
+    <!-- Update Profile form Start -->
+    <div class="container my-5">
+        <h2
+            style="text-align: center;font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">
+            Update Profile</h2>
+        <hr>
+        {% if msg %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>{{msg}}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+        <form method="post" class="row g-3 needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="col-md-6">
+                <label for="validationCustom01" class="form-label">First name</label>
+                <input type="text" name="firstname" value="{{cid.firstname}}" class="form-control"
+                    id="validationCustom01" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="validationCustom02" class="form-label">Last name</label>
+                <input type="text" value="{{cid.lastname}}" name="lastname" class="form-control" id="validationCustom02"
+                    required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="validationCustomUsername" class="form-label">Username / Email</label>
+                <div class="input-group has-validation">
+                    <span class="input-group-text" id="inputGroupPrepend">@</span>
+                    <input type="email" value="{{cid.username}}" name="username" class="form-control"
+                        id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+                    <div class="invalid-feedback">
+                        Please choose a username.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="validationCustom02" class="form-label">Password</label>
+                <input type="password" value="{{cid.password}}" name="password" class="form-control"
+                    id="validationCustom02" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label for="validationCustom03" class="form-label">City</label>
+                <input type="text" value="{{cid.city}}" name="city" class="form-control" id="validationCustom03"
+                    required>
+                <div class="invalid-feedback">
+                    Please provide a valid city.
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="validationCustom04" class="form-label">State</label>
+                <select class="form-select" name="state" id="validationCustom04" required>
+                    <option selected disabled value="">{{cid.state}}</option>
+                    <option>Gujarat</option>
+                    <option>Maharashtra</option>
+                    <option>Goa</option>
+                    <option>Delhi</option>
+                    <option>Other</option>
+                </select>
+                <div class="invalid-feedback">
+                    Please select a valid state.
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="validationCustom05" class="form-label">Mobile</label>
+                <input type="number" value="{{cid.mobile}}" name="mobile" class="form-control" id="validationCustom05"
+                    required>
+                <div class="invalid-feedback">
+                    Please provide a valid zip.
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                    <label class="form-check-label" for="invalidCheck">
+                        Agree to terms and conditions
+                    </label>
+                    <div class="invalid-feedback">
+                        You must agree before submitting.
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-success" type="submit">Update</button>
+            </div>
+        </form>
+    </div>
+    <!-- Update Profile form End -->
+
+
 </body>
 
 </html>

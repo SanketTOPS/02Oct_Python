@@ -11,9 +11,12 @@ def index(request):
         pas=request.POST['password']
 
         user=userSignup.objects.filter(username=unm,password=pas)
+        userid=userSignup.objects.get(username=unm)
+        print("UserID:",userid.id)
         if user: #TRUE
             print("Login Successfull!")
             request.session['user']=unm #session
+            request.session['userid']=userid.id
             return redirect('notes')
         else:
             print("Error!Login Faild...")
@@ -37,8 +40,20 @@ def notes(request):
     return render(request,'notes.html',{'user':user})
 
 def profile(request):
-    
-    return render(request,'profile.html')
+    user=request.session.get('user')
+    userid=request.session.get('userid')
+    cid=userSignup.objects.get(id=userid)
+    print("Current User ID:",cid)
+    if request.method=='POST':
+        updateReq=updateForm(request.POST,instance=cid)
+        if updateReq.is_valid():
+            updateReq.save()
+            request.session.delete()
+            return redirect('/')
+        else:
+            print(updateReq.errors)
+            msg="Error!Something went wrong...."
+    return render(request,'profile.html',{'user':user,'cid':cid})
 
 def about(request):
     return render(request,'about.html')
