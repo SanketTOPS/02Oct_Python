@@ -36,8 +36,18 @@ def signup(request):
     return render(request,'signup.html',{'msg':msg})
 
 def notes(request):
+    msg=""
     user=request.session.get('user')
-    return render(request,'notes.html',{'user':user})
+    if request.method=='POST':
+        newnote=notesForm(request.POST,request.FILES)
+        if newnote.is_valid():
+            newnote.save()
+            print("Your notes has been submitted!")
+            msg="Your notes has been submitted!"
+        else:
+            print(newnote.errors)
+            msg="Error!Something went wrong..."
+    return render(request,'notes.html',{'user':user,'msg':msg})
 
 def profile(request):
     user=request.session.get('user')
