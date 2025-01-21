@@ -90,17 +90,7 @@ def contact(request):
                 subject="Thankyou!",
                 message=f"Hello User!\n\nThank you for connecting with us!\nWe will contact you.\n\n\Thanks & Regards!\nSanket Chauhan\n+91 9724799469 | sanket.tops@gmail.com",
                 from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[
-                    "meetladva1684@gmail.com",
-                    "premahir610@gmail.com",
-                    "harshitprajapati926@gmail.com",
-                    "hemilpatel61024@gmail.com",
-                    "garaniyachintan8@gmail.com",
-                    "sohamparmar79@gmail.com",
-                    "gokanipriyanshi@gmail.com",
-                    "devangikachhadiya37@gmail.com",
-                    "ruchipandya20@gmail.com",
-                ],
+                recipient_list=[request.POST["email"]],
             )
 
         else:
