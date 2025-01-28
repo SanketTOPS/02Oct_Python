@@ -4,6 +4,7 @@ from django.contrib.auth import logout
 from django.core.mail import send_mail
 from FinalProject import settings
 import random
+import requests
 
 
 # Create your views here.
@@ -32,21 +33,49 @@ def signup(request):
     msg = ""
     if request.method == "POST":
         newuser = signupForm(request.POST)
+        username = ""
         if newuser.is_valid():
-            # OTP Email Sending
-            global otp
-            otp = random.randint(111111, 999999)
+            # Username verification
+            try:
+                username = newuser.cleaned_data.get("username")
+                userSignup.objects.get(username=username)
+                print("Username is already exists!")
+                msg = "Username is already exists!"
+            except userSignup.DoesNotExist:
+                # OTP Email Sending
+                global otp
+                otp = random.randint(111111, 999999)
 
-            sub = "Your one time password!"
-            msg = f"Hello User!\n\nThanks for registration with us!\n\nFor account verification, Your one time password is :{otp}.\n\nThanks & Regards!\nNotesApp\nTOPS Technologies Pvt.Ltd"
-            from_email = settings.EMAIL_HOST_USER
-            to_email = [request.POST["username"]]
+                """sub = "Your one time password!"
+                msg = f"Hello User!\n\nThanks for registration with us!\n\nFor account verification, Your one time password is :{otp}.\n\nThanks & Regards!\nNotesApp\nTOPS Technologies Pvt.Ltd"
+                from_email = settings.EMAIL_HOST_USER
+                to_email = [request.POST["username"]]
 
-            send_mail(
-                subject=sub, message=msg, from_email=from_email, recipient_list=to_email
-            )
-            newuser.save()
-            return redirect("otpverify")
+                send_mail(
+                    subject=sub,
+                    message=msg,
+                    from_email=from_email,
+                    recipient_list=to_email,
+                )"""
+
+                # SMS OTP Sending
+                url = "https://www.fast2sms.com/dev/bulkV2"
+
+                querystring = {
+                    "authorization": "YOUR_API_KEY",
+                    "variables_values": f"{otp}",
+                    "route": "otp",
+                    "numbers": "7600009980,8799303343,6353595649",
+                }
+                headers = {"cache-control": "no-cache"}
+                response = requests.request(
+                    "GET", url, headers=headers, params=querystring
+                )
+
+                print(response.text)
+
+                newuser.save()
+                return redirect("otpverify")
         else:
             print(newuser.errors)
             msg = "Error!Something went wrong...."
