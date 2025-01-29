@@ -46,7 +46,7 @@ def signup(request):
                 global otp
                 otp = random.randint(111111, 999999)
 
-                """sub = "Your one time password!"
+                sub = "Your one time password!"
                 msg = f"Hello User!\n\nThanks for registration with us!\n\nFor account verification, Your one time password is :{otp}.\n\nThanks & Regards!\nNotesApp\nTOPS Technologies Pvt.Ltd"
                 from_email = settings.EMAIL_HOST_USER
                 to_email = [request.POST["username"]]
@@ -56,10 +56,10 @@ def signup(request):
                     message=msg,
                     from_email=from_email,
                     recipient_list=to_email,
-                )"""
+                )
 
                 # SMS OTP Sending
-                url = "https://www.fast2sms.com/dev/bulkV2"
+                """url = "https://www.fast2sms.com/dev/bulkV2"
 
                 querystring = {
                     "authorization": "YOUR_API_KEY",
@@ -72,7 +72,7 @@ def signup(request):
                     "GET", url, headers=headers, params=querystring
                 )
 
-                print(response.text)
+                print(response.text)"""
 
                 newuser.save()
                 return redirect("otpverify")
